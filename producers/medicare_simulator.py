@@ -2,6 +2,7 @@ import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+import uuid
 import pandas as pd
 from pathlib import Path
 from confluent_kafka import avro
@@ -15,8 +16,7 @@ class MedicareSimulator:
     """"""
 
     def __init__(
-        self,
-        topic_name: str = "org.science.medicare",
+        self, topic_name: str = 'org.science.medicare',
         base_filepath: str = None,
         base_data_filename: str = "data.csv",
     ):
@@ -27,13 +27,24 @@ class MedicareSimulator:
         self.measure_columns = self.get_measure_columns()
 
         self.topic_name = topic_name
-        # self.topic_name = 'medicare'
-        self.key_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/key_schema.json")
-        self.value_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/value_schema.json")
         self.num_partitions = 1
         self.num_replicas = 1
 
+        self.key_schema, self.value_schema = self.load_avro_schema_from_file()
+
         self.producer = self.get_producer()
+
+    @staticmethod
+    def load_avro_schema_from_file():
+        key_schema_string = """
+        {"type": "string"}
+        """
+        schema_file = f"{Path(__file__).parents[0]}/schemas/value_schema.avsc"
+
+        key_schema = avro.loads(key_schema_string)
+        value_schema = avro.load(schema_file)
+
+        return key_schema, value_schema
 
     def _read_source_data(self) -> pd.DataFrame:
         """
@@ -113,7 +124,8 @@ class MedicareSimulator:
         for row in df.values.tolist():
             value = dict(zip(self.get_value_structure(), row))
             # key = dict(zip(self.get_key_structure(), [row[0]]))
-            key = {"npi": int(row[0])}
+            # key = {"npi": int(row[0])}
+            key = str(uuid.uuid4())
             self.producer.producer.produce(topic=self.topic_name, key=key, value=value)
             logger.info(f"sent event to kafka with key: {key} and value: {value}", class_name=self.__class__.__name__)
 
@@ -212,5 +224,5 @@ class MedicareSimulator:
 
 
 if __name__ == "__main__":
-    med = MedicareSimulator(base_data_filename="data_2.csv")
+    med = MedicareSimulator(topic_name='test', base_data_filename="data_2.csv")
     med.run()

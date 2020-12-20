@@ -16,7 +16,7 @@ class Producer:
             self,
             topic_name,
             key_schema,
-            value_schema=None,
+            value_schema,
             num_partitions=1,
             num_replicas=1,
     ):
