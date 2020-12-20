@@ -26,11 +26,19 @@ python3 -m venv venv
 pip install -r requirements.txt
 ```
 
+5. Set up event consumers for real-time analytics
+```bash
+cd consumers
+python3 -m venv venv
+. venv/bin/activate
+python3 setup.py develop
+```
+
 # Run medicare event simulation
 Run the following to simulate an infinite stream of events into a `org.science.medicare` kafka topic.
 
 **Notes**:
-- make sure you have activated the producers virtual environment before running this command - (step 4).
+- make sure you have activated the __producers__ virtual environment before running this command - (step 4).
 - make sure the raw data is available for this script to load it. (processed or unprocessed folder)
 ```bash
 # from producers directory
@@ -39,6 +47,17 @@ python3 medicare_simulator.py
 This script will run in an infinite loop until you cancel by keyboard `CTRL + C`.
 For simulation purposes, leave it run it in a separate terminal window.
 
+# Run Real-time analytics
+Run the following to print the analytics in real-time of the events that are being sent into
+a kafka topic.
+
+**Notes**:
+- make sure you have activated the __consumers__ virtual environment before running these commands.
+- make sure you have docker running (`docker-compose ps` on the root of the project).
+- make sure you have the event simulation running.
+```bash
+consumers worker -l info
+```
 
 # Extras:
 __Create a clean environment__:
