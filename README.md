@@ -7,7 +7,7 @@ The architecture of the system is the displayed below, and it is based on an eve
 Raw data --> Kafka topic --> Faust consumer
 Raw data --> Simulated data producer --> Kafka Topic --> Faust consumer
 ```
-![Alt text](img/medicare-event-architecture.png?raw=true "System Architecture")
+![Alt text](img/medicare-event-architecture.jpg?raw=true "System Architecture")
 
 The system is able to extend the real-time analysis of Utilisation and Spending
 by using Faust and KSQL under the consumers folder. 
@@ -36,7 +36,7 @@ curl -i -X PUT -H "Accept:application/json" \
 
 3. Download the raw data into the unprocessed data folder.
 ```bash
-wget https://data.cms.gov/api/views/fs4p-t5eq/rows.csv > data/simulation/data.csv
+wget https://data.cms.gov/api/views/fs4p-t5eq/rows.csv -O data/simulation/data.csv
 cp data/simulation/data.csv data/unproccessed/data.csv
 ```
 4. Set up event producer to simulate incoming events
