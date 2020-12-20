@@ -2,14 +2,14 @@
 version: '2'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.0
+    image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: confluentinc/cp-kafka:5.5.0
+    image: confluentinc/cp-kafka:latest
     container_name: kafka
     depends_on:
       - zookeeper
@@ -45,7 +45,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:5.5.0
+    image: confluentinc/cp-schema-registry:latest
     container_name: schema-registry
     ports:
       - 8081:8081
@@ -57,7 +57,7 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
 
   kafka-connect:
-    image: confluentinc/cp-kafka-connect-base:5.5.0
+    image: confluentinc/cp-kafka-connect-base:latest
     container_name: kafka-connect
     depends_on:
       - zookeeper
@@ -91,8 +91,8 @@ services:
       - -c
       - |
         echo "Installing connector plugins"
-        confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:5.5.0
-        confluent-hub install --no-prompt jcustenborder/kafka-connect-spooldir:2.0.43
+        confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:latest
+        confluent-hub install --no-prompt jcustenborder/kafka-connect-spooldir:latest
         #
         # -----------
         # Launch the Kafka Connect worker
@@ -104,7 +104,7 @@ services:
       - $PWD/data:/data
 
   ksqldb:
-    image: confluentinc/ksqldb-server:0.9.0
+    image: confluentinc/ksqldb-server:latest
     container_name: ksqldb
     depends_on:
       - kafka
@@ -133,7 +133,7 @@ services:
       - POSTGRES_PASSWORD=postgres
 
   kafkacat:
-    image: edenhill/kafkacat:1.5.0
+    image: confluentinc/cp-kafkacat:latest
     container_name: kafkacat
     links:
       - kafka
@@ -146,7 +146,7 @@ services:
         while [ 1 -eq 1 ];do sleep 60;done
 
   rest-proxy:
-    image: confluentinc/cp-kafka-rest:6.0.1
+    image: confluentinc/cp-kafka-rest:latest
     depends_on:
       - kafka
       - schema-registry
