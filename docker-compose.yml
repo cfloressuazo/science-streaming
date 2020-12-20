@@ -90,8 +90,8 @@ services:
       - -c
       - |
         echo "Installing connector plugins"
-        confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:latest
-        confluent-hub install --no-prompt jcustenborder/kafka-connect-spooldir:latest
+        confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:5.5.0
+        confluent-hub install --no-prompt jcustenborder/kafka-connect-spooldir:2.0.43
         #
         # -----------
         # Launch the Kafka Connect worker
