@@ -14,14 +14,20 @@ logger = Logger
 class MedicareSimulator:
     """"""
 
-    def __init__(self, base_filepath: str = None, base_data_filename: str = "data.csv"):
+    def __init__(
+        self,
+        topic_name: str = "org.science.medicare",
+        base_filepath: str = None,
+        base_data_filename: str = "data.csv",
+    ):
         self.base_filepath = base_filepath
         self.base_data_filename = base_data_filename
         self.raw_data = self._read_source_data()
         self.categorical_columns = self.get_categorical_columns()
         self.measure_columns = self.get_measure_columns()
 
-        self.topic_name = 'org.science.medicare'
+        self.topic_name = topic_name
+        # self.topic_name = 'medicare'
         self.key_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/key_schema.json")
         self.value_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/value_schema.json")
         self.num_partitions = 1

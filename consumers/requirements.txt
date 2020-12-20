@@ -1,0 +1,4 @@
+faust
+simple-settings
+python-schema-registry-client
+dataclasses-avroschema
