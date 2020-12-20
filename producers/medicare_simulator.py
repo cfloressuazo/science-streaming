@@ -1,16 +1,19 @@
-import json
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 import pandas as pd
 from pathlib import Path
-from utils.logger import Logger
 from confluent_kafka import avro
-
 from producer import Producer
+from utils.logger import Logger
 
 logger = Logger
 
 
 class MedicareSimulator:
     """"""
+
     def __init__(self, base_filepath: str = None, base_data_filename: str = "data.csv"):
         self.base_filepath = base_filepath
         self.base_data_filename = base_data_filename
@@ -194,7 +197,6 @@ class MedicareSimulator:
         logger.info("Beginning simulation, press Ctrl+C to exit at any time", class_name=self.__class__.__name__)
         try:
             while True:
-
                 random_df = self.generate_random_record()
                 self.send_stream_to_kafka(random_df)
 
