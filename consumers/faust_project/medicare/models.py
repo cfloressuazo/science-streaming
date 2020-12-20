@@ -1,7 +1,9 @@
 import faust
 
+
 class MedicareKeyModel(faust.Record, serializer='avro_medicare_key'):
     npi: int
+
 
 class MedicareValueModel(faust.Record, serializer='avro_medicare_value'):
     npi: int
