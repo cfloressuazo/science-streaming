@@ -3,6 +3,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 import uuid
+import json
 import pandas as pd
 from pathlib import Path
 from confluent_kafka import avro
@@ -123,10 +124,10 @@ class MedicareSimulator:
         """
         for row in df.values.tolist():
             value = dict(zip(self.get_value_structure(), row))
-            # key = dict(zip(self.get_key_structure(), [row[0]]))
+            key = dict(zip(self.get_key_structure(), [row[13]]))
             # key = {"npi": int(row[0])}
-            key = str(uuid.uuid4())
-            self.producer.producer.produce(topic=self.topic_name, key=key, value=value, partition=self.num_partitions)
+            # key = str(uuid.uuid4())
+            self.producer.producer.produce(topic=self.topic_name, key=json.dumps(key), value=value, partition=self.num_partitions)
             logger.info(f"sent event to kafka with key: {key} and value: {value}", class_name=self.__class__.__name__)
 
     @staticmethod
@@ -201,7 +202,7 @@ class MedicareSimulator:
     @staticmethod
     def get_key_structure() -> list:
         return [
-            "npi"
+            "Provider Type"
         ]
 
     def get_producer(self) -> Producer:
