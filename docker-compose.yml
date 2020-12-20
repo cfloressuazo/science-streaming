@@ -57,7 +57,7 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
 
   kafka-connect:
-    image: confluentinc/cp-kafka-connect-base:latest
+    image: confluentinc/cp-kafka-connect-base:5.5.0
     container_name: kafka-connect
     depends_on:
       - zookeeper
@@ -72,8 +72,7 @@ services:
       CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
       CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets
       CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
-      CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
       CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
@@ -91,8 +90,8 @@ services:
       - -c
       - |
         echo "Installing connector plugins"
-        confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:latest
-        confluent-hub install --no-prompt jcustenborder/kafka-connect-spooldir:latest
+        confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:5.5.0
+        confluent-hub install --no-prompt jcustenborder/kafka-connect-spooldir:2.0.43
         #
         # -----------
         # Launch the Kafka Connect worker

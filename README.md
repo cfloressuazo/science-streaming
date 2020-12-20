@@ -1,3 +1,23 @@
+# Introduction
+This application simulates the medicare spending based on the medicare dataset and provides real-time capabilities for analytics.
+
+# Project Architecture
+The architecture of the system is the displayed below, and it is based on an event-driven architecture:
+```
+Raw data --> Kafka topic --> Faust consumer
+Raw data --> Simulated data producer --> Kafka Topic --> Faust consumer
+```
+![Alt text](img/medicare-event-architecture.jpg?raw=true "System Architecture")
+
+The system is able to extend the real-time analysis of Utilisation and Spending
+by using Faust and KSQL under the consumers folder. 
+
+## Analysis 
+1. The application prints some metrics by provider type to the console.
+2. The application stores the largest city spending in a table in Kafka.
+3. The application stores the largest provider type in medicare system.
+
+
 # Setup Environment
 
 1. Build up kafka environment in detach mode `-d` (optional)
@@ -12,11 +32,12 @@ curl -i -X PUT -H "Accept:application/json" \
 ```
 - connector name: `source-csv-spooldir-00`
 - topic name: `org.science.medicare`
-- schema: `producers/schemas/simple_config.json`
+- schema: `producers/schemas/config.json`
 
 3. Download the raw data into the unprocessed data folder.
 ```bash
-wget 
+wget https://data.cms.gov/api/views/fs4p-t5eq/rows.csv -O data/simulation/data.csv
+cp data/simulation/data.csv data/unproccessed/data.csv
 ```
 4. Set up event producer to simulate incoming events
 ```bash

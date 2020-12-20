@@ -16,7 +16,7 @@ class MedicareSimulator:
     """"""
 
     def __init__(
-        self, topic_name: str = 'org.science.medicare',
+        self, topic_name: str = 'medicare',
         base_filepath: str = None,
         base_data_filename: str = "data.csv",
     ):
@@ -27,7 +27,7 @@ class MedicareSimulator:
         self.measure_columns = self.get_measure_columns()
 
         self.topic_name = topic_name
-        self.num_partitions = 1
+        self.num_partitions = 10
         self.num_replicas = 1
 
         self.key_schema, self.value_schema = self.load_avro_schema_from_file()
@@ -55,7 +55,7 @@ class MedicareSimulator:
         try:
             logger.info("reading csv base file under processed folder", class_name=self.__class__.__name__)
             df = pd.read_csv(
-                f"{Path(__file__).parents[1]}/data/processed/{self.base_data_filename}"
+                f"{Path(__file__).parents[1]}/data/simulation/{self.base_data_filename}"
             )
         except FileNotFoundError:
             logger.warning("base file not processed, trying under unprocessed folder",
@@ -126,7 +126,7 @@ class MedicareSimulator:
             # key = dict(zip(self.get_key_structure(), [row[0]]))
             # key = {"npi": int(row[0])}
             key = str(uuid.uuid4())
-            self.producer.producer.produce(topic=self.topic_name, key=key, value=value)
+            self.producer.producer.produce(topic=self.topic_name, key=key, value=value, partition=self.num_partitions)
             logger.info(f"sent event to kafka with key: {key} and value: {value}", class_name=self.__class__.__name__)
 
     @staticmethod
@@ -224,5 +224,5 @@ class MedicareSimulator:
 
 
 if __name__ == "__main__":
-    med = MedicareSimulator(topic_name='test', base_data_filename="data_2.csv")
+    med = MedicareSimulator()
     med.run()

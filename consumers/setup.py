@@ -31,7 +31,7 @@ setup(
         ],
         'faust.codecs': [
             'avro_medicare_value = faust_project.codecs.avro:avro_medicare_value_codec',
-            'avro_medicare_key = faust_project.codecs.avro:avro_medicare_key_codec'
+            # 'avro_spending_by_region = faust_project.codecs.avro:avro_medicare_key_codec'
         ],
     },
 )
