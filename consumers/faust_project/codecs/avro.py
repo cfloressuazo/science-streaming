@@ -47,7 +47,7 @@ avro_medicare_value_schema = schema.AvroSchema(
     """)
 
 avro_medicare_key_serializer = FaustSerializer(client, "medicare-key", avro_medicare_key_schema)
-avro_medicare_value_serializer = FaustSerializer(client, "test-value", avro_medicare_value_schema)
+avro_medicare_value_serializer = FaustSerializer(client, "medicare-value", avro_medicare_value_schema)
 
 
 # example of how to use it with dataclasses-avroschema

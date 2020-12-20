@@ -1,5 +1,7 @@
 import faust
 
+from dataclasses_avroschema import AvroModel
+
 
 class MedicareKeyModel(faust.Record, serializer='avro_medicare_key'):
     npi: int
@@ -32,3 +34,16 @@ class MedicareValueModel(faust.Record, serializer='avro_medicare_value'):
     average_submitted_chrg_amt: float
     average_medicare_payment_amt: float
     average_medicare_standard_amt: float
+
+
+# class SpendingByRegionModel(faust.Record, AvroModel, serializer='avro_spending_by_region'):
+#     nppes_provider_country: str
+#     nppes_provider_state: str
+#     nppes_provider_city: str
+#     line_srvc_cnt: float
+#     bene_unique_cnt: int
+#     bene_day_srvc_cnt: int
+#     average_medicare_allowed_amt: float
+#     average_submitted_chrg_amt: float
+#     average_medicare_payment_amt: float
+#     average_medicare_standard_amt: float

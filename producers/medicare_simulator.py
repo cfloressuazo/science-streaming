@@ -16,7 +16,7 @@ class MedicareSimulator:
     """"""
 
     def __init__(
-        self, topic_name: str = 'org.science.medicare',
+        self, topic_name: str = 'medicare',
         base_filepath: str = None,
         base_data_filename: str = "data.csv",
     ):
@@ -224,5 +224,5 @@ class MedicareSimulator:
 
 
 if __name__ == "__main__":
-    med = MedicareSimulator(topic_name='test', base_data_filename="data_2.csv")
+    med = MedicareSimulator(topic_name='medicare', base_data_filename="data_2.csv")
     med.run()
