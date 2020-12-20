@@ -105,11 +105,7 @@
       },
       {
          "name":"provider_type",
-         "type":[
-            "null",
-            "string"
-         ],
-         "default":null
+         "type": "string"
       },
       {
          "name":"medicare_participation_indicator",
