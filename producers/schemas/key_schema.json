@@ -1,0 +1,12 @@
+{
+   "type":"record",
+   "name":"providerKey",
+   "namespace":"org.science.medicare",
+   "fields":[
+      {
+         "name":"npi",
+         "type":"int"
+      }
+   ],
+  "connect.name":"org.science.medicare.providerKey"
+}
