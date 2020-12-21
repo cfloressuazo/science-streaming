@@ -2,7 +2,7 @@ import logging
 from faust_project.app import app
 from faust_project.medicare.models import MedicareValueModel
 
-medicare_topic = app.topic('medicare', partitions=10, value_type=MedicareValueModel)
+medicare_topic = app.topic('medicare', partitions=1, value_type=MedicareValueModel)
 
 logger = logging.getLogger(__name__)
 
@@ -35,9 +35,9 @@ async def process_amount(records):
             Average Medicare Payment Amount: {record.average_medicare_payment_amt}
             """)
 
-provider_type_to_total = app.Table('provider_type_to_total', default=int)
+provider_type_to_total = app.Table('provider_type_to_total', default=int, partitions=1)
 city_to_total = app.Table(
-    'city_to_total', default=int).tumbling(5.0, expires=5.0)
+    'city_to_total', default=int, partitions=1).tumbling(5.0, expires=5.0)
 
 
 @app.agent(medicare_topic)
