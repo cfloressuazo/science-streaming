@@ -34,19 +34,19 @@ async def process_amount(records):
             Average Medicare Allowed Amount: {record.average_medicare_allowed_amt}
             Average Medicare Payment Amount: {record.average_medicare_payment_amt}
             """)
-
-provider_type_to_total = app.Table('provider_type_to_total', default=int, partitions=1)
-city_to_total = app.Table(
-    'city_to_total', default=int, partitions=1).tumbling(5.0, expires=5.0)
-
-
-@app.agent(medicare_topic)
-async def find_large_provider_type_medicare(records):
-    async for record in records:
-        provider_type_to_total[record.provider_type] += record.average_medicare_payment_amt
-
-
-@app.agent(medicare_topic)
-async def find_large_city_medicare(records):
-    async for record in records.group_by(MedicareValueModel.nppes_provider_city):
-        city_to_total[record.nppes_provider_city] += record.average_medicare_payment_amt
+#
+# provider_type_to_total = app.Table('provider_type_to_total', default=int, partitions=1)
+# city_to_total = app.Table(
+#     'city_to_total', default=int, partitions=1).tumbling(5.0, expires=5.0)
+#
+#
+# @app.agent(medicare_topic)
+# async def find_large_provider_type_medicare(records):
+#     async for record in records:
+#         provider_type_to_total[record.provider_type] += record.average_medicare_payment_amt
+#
+#
+# @app.agent(medicare_topic)
+# async def find_large_city_medicare(records):
+#     async for record in records.group_by(MedicareValueModel.nppes_provider_city):
+#         city_to_total[record.nppes_provider_city] += record.average_medicare_payment_amt
