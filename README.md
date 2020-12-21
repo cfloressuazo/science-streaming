@@ -24,7 +24,14 @@ by using Faust and KSQL under the consumers folder.
 ```bash
 docker-compose up --build
 ```
-2. Set up the connector for Kafka Connect to pick up CSV files and load the raw data into a Kafka topic.
+
+2. Download the raw data into the unprocessed data folder.
+```bash
+wget https://data.cms.gov/api/views/fs4p-t5eq/rows.csv -O data/simulation/data.csv
+cp data/simulation/data.csv data/unproccessed/data.csv
+```
+
+3. Set up the connector for Kafka Connect to pick up CSV files and load the raw data into a Kafka topic.
 ```bash
 curl -i -X PUT -H "Accept:application/json" \
     -H  "Content-Type:application/json" http://localhost:8083/connectors/source-csv-spooldir-00/config \
@@ -34,11 +41,6 @@ curl -i -X PUT -H "Accept:application/json" \
 - topic name: `org.science.medicare`
 - schema: `producers/schemas/config.json`
 
-3. Download the raw data into the unprocessed data folder.
-```bash
-wget https://data.cms.gov/api/views/fs4p-t5eq/rows.csv -O data/simulation/data.csv
-cp data/simulation/data.csv data/unproccessed/data.csv
-```
 4. Set up event producer to simulate incoming events
 ```bash
 cd producers
