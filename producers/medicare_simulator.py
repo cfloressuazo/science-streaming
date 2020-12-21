@@ -28,7 +28,7 @@ class MedicareSimulator:
         self.measure_columns = self.get_measure_columns()
 
         self.topic_name = topic_name
-        self.num_partitions = 10
+        self.num_partitions = 1
         self.num_replicas = 1
 
         self.key_schema, self.value_schema = self.load_avro_schema_from_file()
@@ -37,13 +37,22 @@ class MedicareSimulator:
 
     @staticmethod
     def load_avro_schema_from_file():
-        key_schema_string = """
-        {"type": "string"}
-        """
-        schema_file = f"{Path(__file__).parents[0]}/schemas/value_schema.avsc"
+        key_schema_string = """{
+           "name":"org.science.medicare.providerKey",
+           "type":"STRUCT",
+           "isOptional":"false",
+           "fieldSchemas":{
+              "provider_type":{
+                 "type":"STRING",
+                 "isOptional":"false"
+              }
+           }
+        }"""
+        key_schema_file = f"{Path(__file__).parents[0]}/schemas/key_schema.avsc"
+        value_schema_file = f"{Path(__file__).parents[0]}/schemas/value_schema.avsc"
 
-        key_schema = avro.loads(key_schema_string)
-        value_schema = avro.load(schema_file)
+        key_schema = avro.load(key_schema_file)
+        value_schema = avro.load(value_schema_file)
 
         return key_schema, value_schema
 
@@ -127,7 +136,7 @@ class MedicareSimulator:
             key = dict(zip(self.get_key_structure(), [row[13]]))
             # key = {"npi": int(row[0])}
             # key = str(uuid.uuid4())
-            self.producer.producer.produce(topic=self.topic_name, key=json.dumps(key), value=value, partition=self.num_partitions)
+            self.producer.producer.produce(topic=self.topic_name, key=key, value=value)
             logger.info(f"sent event to kafka with key: {key} and value: {value}", class_name=self.__class__.__name__)
 
     @staticmethod

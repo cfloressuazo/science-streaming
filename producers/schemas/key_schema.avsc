@@ -5,7 +5,8 @@
    "fields":[
       {
          "name":"provider_type",
-         "type":"string"
+         "type":["null","string"],
+         "default":null
       }
    ],
   "connect.name":"medicare.providerKey"
