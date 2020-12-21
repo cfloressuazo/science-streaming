@@ -84,6 +84,7 @@ consumers worker -l info
 __Create a clean environment__:
 ```bash
 docker-compose rm -f
+docker volume rm $(docker volume ls -q)
 docker-compose pull
 docker-compose up --build
 ```
