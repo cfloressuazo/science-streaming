@@ -63,7 +63,7 @@ class MedicareSimulator:
         """
         df = None
         try:
-            logger.info("reading csv base file under processed folder", class_name=self.__class__.__name__)
+            logger.info("reading csv base file under simulation folder", class_name=self.__class__.__name__)
             df = pd.read_csv(
                 f"{Path(__file__).parents[1]}/data/simulation/{self.base_data_filename}"
             )
