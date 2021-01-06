@@ -2,7 +2,7 @@ import logging
 from faust_project.app import app
 from faust_project.medicare.models import MedicareValueModel
 
-medicare_topic = app.topic('medicare', partitions=1, value_type=MedicareValueModel)
+medicare_topic = app.topic('medicare', partitions=None, value_type=MedicareValueModel)
 
 logger = logging.getLogger(__name__)
 
