@@ -5,7 +5,6 @@
   "finished.path":"/data/processed",
   "error.path":"/data/error",
   "input.file.pattern":".*\\.csv",
-  "csv.first.row.as.header":"false",
   "schema.generation.enabled":"false",
   "csv.skip.lines":1,
   "key.schema":"{\"name\" : \"org.science.medicare.providerKey\", \"type\" : \"STRUCT\", \"isOptional\" : \"false\", \"fieldSchemas\" : {\"provider_type\" : {\"type\" : \"STRING\", \"isOptional\" : \"false\"}}}",
